@@ -1,2 +1,2 @@
-![Hola mundo Bash]("\VirtualBox VMs\Ubuntu\Hola mundo bash.png")
-
+echo "Hola, Soy Yessica Rodríguez"
+Hola, Soy Yessica Rodríguez
