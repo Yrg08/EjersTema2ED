@@ -1,6 +1,6 @@
 # Ruby
-##### Ejecutamos el intérprete _python_
 
+##### Ejecutamos el intérprete _python_
 
 
 
