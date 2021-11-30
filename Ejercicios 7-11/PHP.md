@@ -1,5 +1,7 @@
 # Script ejecutable
 
+##### Usamos el interpréte de PHP -a
+
 + Editamos el archivo _hola.php_
 
  #!/usr/bin/env php
@@ -15,3 +17,4 @@ chmod  +x  hola.php
 ./hola.php
 
 ##### El archivo tiene una extensión _.php_
+##### El lenguaje primero se compila a su representación intermedia que luego se interpreta en tiempo de ejecución.
