@@ -1,78 +1,179 @@
-## Creación de proyecto
+# Proceso
 
-    mvn archetype:generate -DgroupId=com.mycompany.app -DartifactId=my-app \
-        -DarchetypeArtifactId=maven-archetype-quickstart -DarchetypeVersion=1.0 -DinteractiveMode=false
-        
-   >>>>
-   
-   + groupId: corresponde a package com.mycompany.app de cada clase.
-   >>>>
+A continuación se indica el proceso a seguir para construir o generar el proyecto. 
 
->>>>
-+ artifactId: corresponde al nombre de componente o proyecto java desarrollado
->>>>
+0. En tu equipo, entra en la carpeta donde guardas tus proyectos.
 
-El comando anterior genera una estructura de directorios como la mostrada a continuación:
+```bash
+cd
+mkdir Proyectos  
+cd Proyectos
+```
 
-    tree
+1. Descarga el código fuente.
 
-    .
-    ├── pom.xml
-    └──src
-        ├── main
-        │   └── java
-        │       └── com
-        │           └── mycompany
-        │               └── app
-        │                   └── App.java
-        └── test
-            └── java
-                └── com
-                    └── mycompany
-                        └── app
-                            └── AppTest.java
-                            
-El archivo pom.xml tiene un contenido similar a este:
+```bash
+git  clone  https://github.com/jamj2000/DAW1-ED-Bibliotecas.git
+```
 
-    <project>
-      <modelVersion>4.0.0</modelVersion>
-      <groupId>com.mycompany.app</groupId>
-      <artifactId>myapp</artifactId>
-      <packaging>jar</packaging>
-      <version>1.0.0</version>
-    </project>
-    
-La etiqueta modelVersion hace referencia a la propia estructura del fichero Maven (actualmente es la 4).
+2. Entra en el directorio DAW1-ED-Bibliotecas/cpp
 
-La etiqueta packaging indica la forma de empaquetado. Por defecto es .jar.
+```bash
+cd  DAW1-ED-Bibliotecas/cpp
+```
 
-## Objetivos o metas (goals)
+3. Crea un directorio de construcción y entra en él.
 
-Maven ya tiene predefinidas una serie de metas (goals, en terminología de maven). Son las siguientes:
+```bash
+mkdir  build  &&  cd  build
+```
 
-Las metas que forman parte del ciclo de vida principal del proyecto Maven son:
+En este directorio se generará el archivo _Makefile_ y el ejecutable y bibliotecas.
 
-+ compile: Genera los ficheros .class compilando los fuentes .java
-+ test: Ejecuta los test automáticos de JUnit existentes, abortando el proceso si alguno de ellos falla.
-+ package: Genera el fichero .jar con los .class compilados
-+ install: Copia el fichero .jar a un directorio de nuestro ordenador donde maven deja todos los .jar. De esta forma esos .jar pueden utilizarse en otros proyectos maven en el               mismo ordenador.
-+ deploy: Copia el fichero .jar a un servidor remoto, poniéndolo disponible para cualquier proyecto maven con acceso a ese servidor remoto.
 
-Cuando se ejecuta cualquiera de los comandos maven, por ejemplo, si ejecutamos mvn install, maven irá verificando todas las fases del ciclo de vida desde la primera hasta la del comando, ejecutando solo aquellas que no se hayan ejecutado previamente.
+4. Para generar el archivo _Makefile_ ejecuta:
 
-También existen algunas objetivos o metas que están fuera del ciclo de vida que pueden ser llamadas, pero Maven asume que estas metas no son parte del ciclo de vida por defecto (no tienen que ser siempre realizadas). 
+```bash
+cmake  ..
+```
 
-Estas metas son:
+El `..` indica el directorio padre. Es el directorio donde `cmake` debe leer el archivo de configuración `CMakeLists.txt`.
 
-+ clean: Elimina todos los .class y .jar generados. Después de este comando se puede comenzar un compilado desde cero.
-+ site: Genera un sitio web con la información de nuestro proyecto.
+Por defecto, en Linux, para `cmake` el directorio donde se instalará el ejecutable y las bibliotecas se almacena en la variable `CMAKE_INSTALL_PREFIX` cuyo valor es `/usr/local`. Podemos cambiar este valor por otro. Por ejemplo para indicar que el directorio donde se instalará el ejecutable y las bibliotecas sea `/usr`, ejecutamos: 
 
-Por ejemplo, para compilar ejecutaremos:
+```bash
+cmake  ..  -DCMAKE_INSTALL_PREFIX=/usr
+```
 
-    mvn  compile
-    
-y para generar un archivo .jar
+5. Comprobamos que se ha generado un archivo __`Makefile`__.
 
-    mvn  package
-    
- Todos los archivos generados durante la construcción se guardan en la carpeta target.
+```bash
+ls 
+cat Makefile
+```
+
+6. Ahora podemos realizar el proceso de construcción con el comando `make`:
+
+```bash
+make
+```
+
+7. Si deseamos realizar la instalación de los archivos generados, hacemos:
+
+```bash
+sudo  make  install
+```
+
+
+## Comentarios acerca del archivo CMakeLists.txt
+
+A continuación se comenta cada una de las secciones del archivo __`CMakeLists.txt`__
+
+__Indicamos la versión de cmake requerida y el nombre del proyecto.__
+```
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
+PROJECT(MyProject)
+```
+
+__Indicamos el tipo de construcción y los directorios donde se almacenarán los archivos resultantes.__  
+
+En este caso el ejecutable se guardará en `build/bin` y las bibliotecas en `build/lib`.  
+
+Los tipos de construcción son:
+- Debug 
+- Release
+- RelWithDebInfo (Release with Debug Information) 
+- MinSizeRel     (Release with Minimum Size)
+
+```
+SET(CMAKE_BUILD_TYPE       Release)
+SET(EXECUTABLE_OUTPUT_PATH bin)
+SET(LIBRARY_OUTPUT_PATH    lib)
+```
+
+__Directorios donde se hallan archivos de cabecera .h__
+```
+INCLUDE_DIRECTORIES (${PROJECT_SOURCE_DIR}/MyLib1  ${PROJECT_SOURCE_DIR}/MyLib2)
+```
+
+__Código fuente para el ejecutable__
+```
+# Ejecutable
+#---------------------------------------------------------------
+FILE(GLOB MyAppSrc SOURCES "MyApp/*.cpp")
+ADD_EXECUTABLE(MyApplication ${MyAppSrc})
+```
+
+__Código fuente para la biblioteca dinámica__
+```
+# Biblioteca dinámica
+#---------------------------------------------------------------
+FILE(GLOB MyLibSrc1 "MyLib1/*.cpp")
+ADD_LIBRARY(MyLibrary1 SHARED ${MyLibSrc1})
+```
+
+__Código fuente para la biblioteca estática__
+```
+# Biblioteca estática
+#---------------------------------------------------------------
+FILE(GLOB MyLibSrc2 "MyLib2/*.cpp")
+ADD_LIBRARY(MyLibrary2 STATIC ${MyLibSrc2})
+```
+
+__Proceso de enlazado__
+```
+# Enlazado
+#---------------------------------------------------------------
+TARGET_LINK_LIBRARIES(MyApplication  MyLibrary1  MyLibrary2)
+
+# IMPORTANTE: Establecemos RPATH para ejecutable (sirve para encontrar las bibliotecas)
+SET_TARGET_PROPERTIES(MyApplication  PROPERTIES  INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/lib)
+```
+
+En el primer comando `TARGET_LINK_LIBRARIES` indicamos el ejecutable y las bibliotecas con las cual se enlaza.  
+En el segundo comando `SET_TARGET_PROPERTIES(MyApplication  PROPERTIES  INSTALL_RPATH  ... )` indicamos el directorio
+donde el ejecutable, una vez instalado, debería buscar las bibliotecas dinámicas, una vez instaladas también.
+
+
+__Archivos resultantes y directorios de instalación__
+```
+# Instalación
+#---------------------------------------------------------------
+INSTALL (TARGETS  MyApplication  MyLibrary1  MyLibrary2
+  RUNTIME DESTINATION "${CMAKE_INSTALL_PREFIX}/bin"
+  LIBRARY DESTINATION "${CMAKE_INSTALL_PREFIX}/lib"
+  ARCHIVE DESTINATION "${CMAKE_INSTALL_PREFIX}/lib"
+)
+``` 
+Suponiendo que la variable `CMAKE_INSTALL_PREFIX` tiene el valor por defecto `/usr/local`, en caso de realizar `sudo  make  install` se copiarán los siguientes archivos a los siguientes directorios:
+
+- `MyApplication` a `/usr/local/bin` 
+- `MyLibrary1` a `/usr/local/lib`
+- `MyLibrary2` a `/usr/local/lib`
+
+Si `CMAKE_INSTALL_PREFIX` tiene otro valor, el directorio resultante dependerá de dicho valor.
+
+Los tipos de destinos son:
+
+- `RUNTIME DESTINATION`: para archivos ejecutables  (en este caso `MyApplication`)
+- `LIBRARY DESTINATION`: para bibliotecas dinámicas (en este caso `MyLibrary1`)
+- `ARCHIVE DESTINATION`: para bibliotecas estáticas (en este caso `MyLibrary2`)
+
+>En realidad los archivos de biblioteca que se instalarán tiene la forma:
+>- libMyLibrary1.so
+>- libMyLibrary2.a
+
+
+__Mensaje que se mostrará al final de la ejecución de `cmake ..`__
+```
+MESSAGE (
+"\n  Resumen de construcción (build) para la aplicación."
+"\n  -----------------------------------------------------------"
+"\n  * Prefijo de instalación      : " ${CMAKE_INSTALL_PREFIX}
+"\n  * Directorio del ejecutable   : " ${CMAKE_INSTALL_PREFIX}/bin
+"\n  * Directorio de la biblioteca : " ${CMAKE_INSTALL_PREFIX}/lib
+"\n  * Tipo de construcción (build): " ${CMAKE_BUILD_TYPE}
+"\n  * Plataforma                  : " ${CMAKE_SYSTEM} ${CMAKE_SYSTEM_PROCESSOR}
+"\n"
+)
+```
