@@ -1,7 +1,5 @@
 # PHP
 
-##### Ejecutamos el intérprete _php -a_
-
 Para PHP hay 3 opciones para escribir y ejecutar el comando de "Hola mundo". A continuación te mostraré un ejemplo de cada uno:
 
 + Opción 1
@@ -18,6 +16,3 @@ php print ("¡Hola, soy Yessica Rodríguez!");
 
 $txt = "Hola, soy Yessica Rodríguez";
 echo "<script> alert('$txt'); </script>";
-
-##### Para salir del intérprete pulsamos CTRL+D.
-##### El lenguaje primero se compila a su representación intermedia que luego se interpreta en tiempo de ejecución.
