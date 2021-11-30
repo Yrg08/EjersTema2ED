@@ -1,3 +1,3 @@
 # Ruby
 
-puts "Hola, soy Yessica Rodríguez González"
+puts "Hola, soy Yessica Rodríguez"
