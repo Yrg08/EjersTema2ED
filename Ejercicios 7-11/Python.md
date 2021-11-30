@@ -1,5 +1,7 @@
 # Script ejecutable
 
+##### Usamos el interpréte de Python
+
 + Editamos el archivo _hola.py_
 
  #!/usr/bin/env python
