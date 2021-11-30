@@ -6,7 +6,7 @@
 
  #!/usr/bin/env bash
  
-echo "Hola, soy Yessica"
+echo "Hola, soy Yessica Rodríguez"
 
 + Permitimos ejecución
 
