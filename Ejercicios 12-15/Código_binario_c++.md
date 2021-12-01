@@ -39,7 +39,7 @@
         return 0;
     } 
 
-### Tras la creación de estos archivos de código fuente en c.
+### Tras la creación de estos archivos de código fuente en c++.
 
 A. Compilamos:
 
