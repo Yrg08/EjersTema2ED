@@ -26,6 +26,7 @@
         //-------------
         
         #include <stdio.h>
+        
         int suma (int a, int b);
         extern char *mensaje;
         extern int num1, num2;
@@ -49,7 +50,7 @@ A. Compilamos:
 > 
 >  gcc -9 -o programa main.o datos.o suma.o
 
-B. Nos generará un archivo binario llamado _programas_.
+B. Nos generará un archivo binario llamado _programa_.
 
 C. Si lo ejecutamos deberíamos obtener el siguiente resultado:
 
