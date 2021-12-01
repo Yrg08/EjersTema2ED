@@ -45,7 +45,7 @@ A. Compilamos:
 
         g++ -o programa main.o datos.o suma.o
 
-B. Nos generará un archivo binario llamado _programas_.
+B. Nos generará un archivo binario llamado _programa_.
 
 C. Si lo ejecutamos deberíamos obtener el siguiente resultado:
 
