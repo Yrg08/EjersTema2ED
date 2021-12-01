@@ -26,6 +26,7 @@
         //-------------
         
         #include <stdio.h>
+        
         int suma (int a, int b);
         extern char *mensaje;
         extern int num1, num2;
